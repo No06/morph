@@ -2,7 +2,8 @@
     "mainPage": {
         "navigation": {
             "convert": "转换",
-            "settings": "设置"
+            "settings": "设置",
+            "debug": "调试"
         }
     }
 }

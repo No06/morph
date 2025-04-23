@@ -61,6 +61,7 @@ class TranslationsMainPageNavigationEn {
 	// Translations
 	String get convert => 'Convert';
 	String get settings => 'Settings';
+	String get debug => 'Debug';
 }
 
 /// Flat map(s) containing all translations.
@@ -70,6 +71,7 @@ extension on Translations {
 		switch (path) {
 			case 'mainPage.navigation.convert': return 'Convert';
 			case 'mainPage.navigation.settings': return 'Settings';
+			case 'mainPage.navigation.debug': return 'Debug';
 			default: return null;
 		}
 	}

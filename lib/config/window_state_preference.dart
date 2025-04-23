@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:ui';
 
@@ -13,9 +14,18 @@ import 'package:window_manager/window_manager.dart';
 
 part 'window_state_preference.g.dart';
 
-class WindowStatePreference extends Preference<WindowState> {
+class WindowStatePreference extends PreferenceWithDefault<WindowState> {
   WindowStatePreference._()
-    : super("windowState", serialize: true, fromJson: WindowState.fromJson);
+    : super(
+        "windowState",
+        serialize: true,
+        fromJson: WindowState.fromJson,
+        defaultValue: WindowState(
+          position: null,
+          size: Size(960, 593),
+          hideSystemTitleBar: !kIsWeb && Platform.isWindows,
+        ),
+      );
 
   factory WindowStatePreference() => instance;
 
@@ -25,8 +35,11 @@ class WindowStatePreference extends Preference<WindowState> {
 @JsonSerializable()
 @CopyWith()
 class WindowState {
-  const WindowState({this.position, this.size, bool? hideSystemTitleBar})
-    : _hideSystemTitleBar = hideSystemTitleBar;
+  const WindowState({
+    this.position,
+    this.size,
+    required this.hideSystemTitleBar,
+  });
 
   factory WindowState.fromJson(JsonMap json) => _$WindowStateFromJson(json);
 
@@ -36,11 +49,14 @@ class WindowState {
   @SizeJsonConverter()
   final Size? size;
 
-  final bool? _hideSystemTitleBar;
-  bool get hideSystemTitleBar =>
-      _hideSystemTitleBar ?? !kIsWeb && Platform.isWindows;
+  final bool hideSystemTitleBar;
 
   JsonMap toJson() => _$WindowStateToJson(this);
+
+  @override
+  String toString() {
+    return jsonEncode(toJson());
+  }
 }
 
 class WindowStateListener extends WindowListener {
@@ -50,9 +66,10 @@ class WindowStateListener extends WindowListener {
     final windowState = WindowStatePreference().value;
     final position = await windowManager.getPosition();
     final size = await windowManager.getSize();
-    WindowStatePreference().value =
-        windowState?.copyWith(position: position, size: size) ??
-        WindowState(position: position, size: size);
+    WindowStatePreference().value = windowState.copyWith(
+      position: position,
+      size: size,
+    );
   }
 
   void _updateStateDebounced() => _debouncer.run(_updateState);

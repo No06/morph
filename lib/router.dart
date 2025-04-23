@@ -1,37 +1,58 @@
 part of 'app.dart';
 
 final rootNavigatorKey = GlobalKey<NavigatorState>();
-final _shellNavigatorKey = GlobalKey<NavigatorState>();
+final mainPageNavigatorKey = GlobalKey<NavigatorState>();
+final convertPageNavigatorKey = GlobalKey<NavigatorState>();
+
+GlobalKey<NavigatorState> get windowBodyNavigatorKey =>
+    WindowStatePreference().value.hideSystemTitleBar
+        ? mainPageNavigatorKey
+        : convertPageNavigatorKey;
 
 final _routerProvider = Provider<GoRouter>((ref) {
+  final routes = <RouteBase>[];
+  final convertPageRoute = ShellRoute(
+    navigatorKey: convertPageNavigatorKey,
+    builder: (context, state, child) => _MainPage(child: child),
+    routes: [
+      GoRoute(
+        path: '/convert',
+        pageBuilder:
+            (context, state) =>
+                _SharedAxisPage(key: state.pageKey, child: const ConvertPage()),
+      ),
+      GoRoute(
+        path: '/setting',
+        pageBuilder:
+            (context, state) => _SharedAxisPage(
+              key: state.pageKey,
+              child: const SettingsPage(),
+            ),
+      ),
+      GoRoute(
+        path: '/debug',
+        pageBuilder: (context, state) {
+          return _SharedAxisPage(key: state.pageKey, child: const DebugPage());
+        },
+      ),
+    ],
+  );
+  if (WindowStatePreference().value.hideSystemTitleBar) {
+    routes.add(
+      ShellRoute(
+        navigatorKey: mainPageNavigatorKey,
+        routes: [convertPageRoute],
+        builder: (context, state, child) => VirtualWindowFrame(body: child),
+      ),
+    );
+  } else {
+    routes.add(convertPageRoute);
+  }
+
   return GoRouter(
     navigatorKey: rootNavigatorKey,
     initialLocation: '/convert',
-    routes: [
-      ShellRoute(
-        parentNavigatorKey: rootNavigatorKey,
-        navigatorKey: _shellNavigatorKey,
-        builder: (context, state, child) => _MainPage(child: child),
-        routes: [
-          GoRoute(
-            path: '/convert',
-            pageBuilder:
-                (context, state) => _SharedAxisPage(
-                  key: state.pageKey,
-                  child: const ConvertPage(),
-                ),
-          ),
-          GoRoute(
-            path: '/setting',
-            pageBuilder:
-                (context, state) => _SharedAxisPage(
-                  key: state.pageKey,
-                  child: const SettingsPage(),
-                ),
-          ),
-        ],
-      ),
-    ],
+    routes: routes,
   );
 });
 
@@ -85,4 +106,21 @@ class _SharedAxisPage<T> extends Page<T> {
       },
     );
   }
+}
+
+extension BuildContextExtension on BuildContext {
+  Future<T?> appPush<T>(
+    Widget page, {
+    PageTransitionType type = PageTransitionType.rightToLeft,
+  }) => pushTransition<T>(
+    type: type,
+    curve: Curves.fastEaseInToSlowEaseOut,
+    duration: const Duration(milliseconds: 335),
+    child: DecoratedBox(
+      decoration: BoxDecoration(
+        boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 35)],
+      ),
+      child: page,
+    ),
+  );
 }

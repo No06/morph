@@ -52,11 +52,8 @@ class Progress {
       if (totalMicroseconds <= 0) {
         return null;
       }
-      // 计算百分比并限制在 0.0 到 100.0 之间
-      return (currentMicroseconds / totalMicroseconds * 100.0).clamp(
-        0.0,
-        100.0,
-      );
+      // 计算百分比并限制在 0.0 到 1.0 之间
+      return (currentMicroseconds / totalMicroseconds).clamp(0, 1);
     }
     return null; // 无法计算百分比
   }

@@ -16,12 +16,11 @@ void main() async {
 
   initWindow() async {
     await windowManager.ensureInitialized();
-    const defaultWindowSize = Size(960, 593);
-    final windowState = WindowStatePreference().value;
-    final windowSize = windowState?.size ?? defaultWindowSize;
-    final position = windowState?.position;
+    final windowState = WindowStatePreference().value; // has default value
+    final windowSize = windowState.size;
+    final position = windowState.position;
     final hasPosition = position != null;
-    final hideSystemTitleBar = windowState?.hideSystemTitleBar ?? false;
+    final hideSystemTitleBar = windowState.hideSystemTitleBar;
     final windowOptions = WindowOptions(
       center: !hasPosition,
       size: windowSize,

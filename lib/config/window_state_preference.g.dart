@@ -11,7 +11,7 @@ abstract class _$WindowStateCWProxy {
 
   WindowState size(Size? size);
 
-  WindowState hideSystemTitleBar(bool? hideSystemTitleBar);
+  WindowState hideSystemTitleBar(bool hideSystemTitleBar);
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `WindowState(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
@@ -19,7 +19,7 @@ abstract class _$WindowStateCWProxy {
   /// ```dart
   /// WindowState(...).copyWith(id: 12, name: "My name")
   /// ````
-  WindowState call({Offset? position, Size? size, bool? hideSystemTitleBar});
+  WindowState call({Offset? position, Size? size, bool hideSystemTitleBar});
 }
 
 /// Proxy class for `copyWith` functionality. This is a callable class and can be used as follows: `instanceOfWindowState.copyWith(...)`. Additionally contains functions for specific fields e.g. `instanceOfWindowState.copyWith.fieldName(...)`
@@ -35,7 +35,7 @@ class _$WindowStateCWProxyImpl implements _$WindowStateCWProxy {
   WindowState size(Size? size) => this(size: size);
 
   @override
-  WindowState hideSystemTitleBar(bool? hideSystemTitleBar) =>
+  WindowState hideSystemTitleBar(bool hideSystemTitleBar) =>
       this(hideSystemTitleBar: hideSystemTitleBar);
 
   @override
@@ -65,7 +65,7 @@ class _$WindowStateCWProxyImpl implements _$WindowStateCWProxy {
           hideSystemTitleBar == const $CopyWithPlaceholder()
               ? _value.hideSystemTitleBar
               // ignore: cast_nullable_to_non_nullable
-              : hideSystemTitleBar as bool?,
+              : hideSystemTitleBar as bool,
     );
   }
 }
@@ -89,7 +89,7 @@ WindowState _$WindowStateFromJson(Map<String, dynamic> json) => WindowState(
     json['size'],
     const SizeJsonConverter().fromJson,
   ),
-  hideSystemTitleBar: json['hideSystemTitleBar'] as bool?,
+  hideSystemTitleBar: json['hideSystemTitleBar'] as bool,
 );
 
 Map<String, dynamic> _$WindowStateToJson(WindowState instance) =>

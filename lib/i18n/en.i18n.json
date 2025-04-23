@@ -2,7 +2,8 @@
     "mainPage": {
         "navigation": {
             "convert": "Convert",
-            "settings": "Settings"
+            "settings": "Settings",
+            "debug": "Debug"
         }
     }
 }

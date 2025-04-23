@@ -194,13 +194,13 @@ class _Indicator extends StatefulWidget {
     required this.animationType,
     required this.color,
     required this.duration,
-    this.height = 2,
   });
 
   final IndicatorAnimationType animationType;
   final Color color;
   final Duration duration;
-  final double height;
+
+  static const height = 2.0;
 
   @override
   State<_Indicator> createState() => _IndicatorState();
@@ -210,7 +210,7 @@ class _IndicatorState extends State<_Indicator> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: widget.height,
+      height: _Indicator.height,
       width: double.infinity,
       child: Align(
         alignment: switch (widget.animationType) {

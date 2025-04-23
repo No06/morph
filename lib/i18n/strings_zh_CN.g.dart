@@ -58,6 +58,7 @@ class _TranslationsMainPageNavigationZhCn implements TranslationsMainPageNavigat
 	// Translations
 	@override String get convert => '转换';
 	@override String get settings => '设置';
+	@override String get debug => '调试';
 }
 
 /// Flat map(s) containing all translations.
@@ -67,6 +68,7 @@ extension on TranslationsZhCn {
 		switch (path) {
 			case 'mainPage.navigation.convert': return '转换';
 			case 'mainPage.navigation.settings': return '设置';
+			case 'mainPage.navigation.debug': return '调试';
 			default: return null;
 		}
 	}
