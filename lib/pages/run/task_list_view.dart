@@ -6,13 +6,26 @@ class _TaskListView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final tasks = ref.read(_tasksProvider).tasks;
-    // TODO: Customize ffmpeg path
-    final ffmpegPath =
-        r"F:\icraf\Desktop\ffmpeg-n7.1-latest-win64-gpl-shared-7.1\bin\ffmpeg.exe";
+
+    void onTapAdd() async {
+      final result = await windowBodyNavigatorKey.currentContext
+          ?.appPush<List<FfmpegTask>>(TaskCreatePage());
+      if (result == null || result.isEmpty) return;
+      ref.read(_tasksProvider).addAll(result);
+    }
+
     void onTapStart() {
       if (tasks.isEmpty) {
         AppNotification.info(title: "No tasks to start").show(context);
+        return;
       }
+
+      final ffmpegPath = ref.read(appConfigProvider).ffmpegPath;
+      if (ffmpegPath == null || ffmpegPath.isEmpty) {
+        AppNotification.error(title: "FFmpeg path is not set").show(context);
+        return;
+      }
+
       for (final task in tasks) {
         task.run(ffmpegPath: ffmpegPath);
       }
@@ -34,6 +47,7 @@ class _TaskListView extends ConsumerWidget {
                 children: [
                   Text("Tasks", style: Theme.of(context).textTheme.titleLarge),
                   Spacer(),
+                  IconButton(onPressed: onTapAdd, icon: Icon(Icons.add)),
                   IconButton(
                     onPressed: onTapStart,
                     icon: Icon(Icons.play_arrow),

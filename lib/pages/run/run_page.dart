@@ -5,7 +5,9 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:morph/app.dart';
 import 'package:morph/models/ffmpeg/task/ffmpeg_task.dart';
+import 'package:morph/models/ffmpeg/task/preset/mp4_convert_config.dart';
 import 'package:morph/pages/run/task_create_page.dart';
+import 'package:morph/provider/app_config_provider.dart';
 import 'package:morph/utils/ffmpeg/progress.dart';
 import 'package:morph/widgets/app_notification/app_notification.dart';
 import 'package:morph/widgets/expansion_list_tile.dart';
@@ -34,7 +36,9 @@ class ConvertPage extends ConsumerWidget {
                     title: "MP4",
                     onTap: () async {
                       final result = await windowBodyNavigatorKey.currentContext
-                          ?.appPush<List<FfmpegTask>>(TaskCreatePage());
+                          ?.appPush<List<FfmpegTask>>(
+                            TaskCreatePage(config: Mp4ConvertConfig()),
+                          );
                       if (result == null || result.isEmpty) return;
                       ref.read(_tasksProvider).addAll(result);
                     },

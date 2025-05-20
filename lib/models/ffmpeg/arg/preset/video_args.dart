@@ -1,3 +1,4 @@
+import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:ffmpeg_cli/ffmpeg_cli.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:morph/models/ffmpeg/arg/ffmpeg_args.dart';
@@ -47,6 +48,7 @@ class Resolution {
 }
 
 @JsonSerializable(converters: [CliArgJsonConverter()])
+@CopyWith(copyWithNull: false)
 class VideoArgs extends FfmpegArgs {
   const VideoArgs({
     this.videoEncoding,

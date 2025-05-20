@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:morph/app.dart';
+import 'package:morph/config/app_preference.dart';
 import 'package:morph/config/window_state_preference.dart';
 import 'package:morph/i18n/strings.g.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -12,6 +13,7 @@ void main() async {
   initPreferences() async {
     final sharedPreferences = await SharedPreferences.getInstance();
     WindowStatePreference().init(sharedPreferences);
+    AppPreference().init(sharedPreferences);
   }
 
   initWindow() async {
