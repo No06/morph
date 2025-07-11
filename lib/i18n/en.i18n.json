@@ -1,9 +1,0 @@
-{   
-    "mainPage": {
-        "navigation": {
-            "convert": "Convert",
-            "settings": "Settings",
-            "debug": "Debug"
-        }
-    }
-}
